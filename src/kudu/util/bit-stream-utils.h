@@ -128,6 +128,9 @@ class BitReader {
   // Current position in the stream, by bit.
   int position() const { return byte_offset_ * 8 + bit_offset_; }
 
+  // Get a pointer to the next aligned byte and advance the underlying buffer by num_bytes.
+  bool GetNextBytePtr(int num_bytes, const uint8_t** ptr);
+
   // Rewind the stream by 'num_bits' bits
   void Rewind(int num_bits);
 
