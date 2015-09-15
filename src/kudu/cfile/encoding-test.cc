@@ -22,7 +22,6 @@
 
 #include "kudu/cfile/block_encodings.h"
 #include "kudu/cfile/bshuf_block.h"
-#include "kudu/cfile/delta_block.h"
 #include "kudu/cfile/cfile_writer.h"
 #include "kudu/cfile/gvint_block.h"
 #include "kudu/cfile/plain_bitmap_block.h"
@@ -806,19 +805,7 @@ struct BitshuffleTestTraits {
     typedef BShufBlockDecoder<type> decoder_type;
   };
 };
-
-struct DeltaEncodingTestTraits {
-  template<DataType type>
-  struct Classes {
-    typedef DeltaBlockBuilder<type> encoder_type;
-    typedef DeltaBlockDecoder<type> decoder_type;
-  };
-};
-
-typedef testing::Types<RleTestTraits,
-                       BitshuffleTestTraits,
-                       DeltaEncodingTestTraits,
-                       PlainTestTraits> MyTestFixtures;
+typedef testing::Types<RleTestTraits, BitshuffleTestTraits, PlainTestTraits> MyTestFixtures;
 TYPED_TEST_CASE(IntEncodingTest, MyTestFixtures);
 
 template<class TestTraits>

@@ -116,25 +116,6 @@ inline void BitReader::BufferValues() {
   }
 }
 
-inline bool BitReader::GetNextBytePtr(int num_bytes, const uint8_t** ptr) {
-  int bytes_read = BitUtil::Ceil(bit_offset_, 8);
-  if (PREDICT_FALSE(byte_offset_ + bytes_read + num_bytes > max_bytes_)) return false;
-
-  byte_offset_ += bytes_read;
-  *ptr = buffer_ + byte_offset_;
-  byte_offset_ += num_bytes;
-
-  // Reset buffered_values_
-  bit_offset_ = 0;
-  int bytes_remaining = max_bytes_ - byte_offset_;
-  if (PREDICT_TRUE(bytes_remaining >= 8)) {
-    memcpy(&buffered_values_, buffer_ + byte_offset_, 8);
-  } else {
-    memcpy(&buffered_values_, buffer_ + byte_offset_, bytes_remaining);
-  }
-  return true;
-}
-
 template<typename T>
 inline bool BitReader::GetValue(int num_bits, T* v) {
   // TODO: revisit this limit if necessary
