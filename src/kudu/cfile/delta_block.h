@@ -461,9 +461,6 @@ class DeltaBlockDecoder : public BlockDecoder {
   static const size_t kEntriesPerMiniBlock = kDeltaEntriesPerMiniBlock + 1;
 };
 
-template<>
-Status DeltaBlockDecoder<INT32>::DoGetNextMiniBlock(int32_t* vals);
-
 } // namespace cfile
 } // namespace kudu
 

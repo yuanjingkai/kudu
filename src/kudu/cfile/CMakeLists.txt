@@ -33,7 +33,6 @@ add_library(cfile
   block_compression.cc
   bloomfile.cc
   bshuf_block.cc
-  delta_block.cc
   cfile_reader.cc
   cfile_util.cc
   cfile_writer.cc
