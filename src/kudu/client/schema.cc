@@ -53,6 +53,7 @@ kudu::EncodingType ToInternalEncodingType(KuduColumnStorageAttributes::EncodingT
     case KuduColumnStorageAttributes::GROUP_VARINT: return kudu::GROUP_VARINT;
     case KuduColumnStorageAttributes::RLE: return kudu::RLE;
     case KuduColumnStorageAttributes::BIT_SHUFFLE: return kudu::BIT_SHUFFLE;
+    case KuduColumnStorageAttributes::DELTA_PACKING: return kudu::DELTA_PACKING;
     default: LOG(FATAL) << "Unexpected encoding type: " << type;
   }
 }
@@ -66,6 +67,7 @@ KuduColumnStorageAttributes::EncodingType FromInternalEncodingType(kudu::Encodin
     case kudu::GROUP_VARINT: return KuduColumnStorageAttributes::GROUP_VARINT;
     case kudu::RLE: return KuduColumnStorageAttributes::RLE;
     case kudu::BIT_SHUFFLE: return KuduColumnStorageAttributes::BIT_SHUFFLE;
+    case kudu::DELTA_PACKING: return KuduColumnStorageAttributes::DELTA_PACKING;
     default: LOG(FATAL) << "Unexpected internal encoding type: " << type;
   }
 }

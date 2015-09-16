@@ -19,6 +19,7 @@
 
 #include <glog/logging.h>
 
+#include "kudu/cfile/delta_block.h"
 #include "kudu/cfile/bshuf_block.h"
 #include "kudu/cfile/gvint_block.h"
 #include "kudu/cfile/plain_bitmap_block.h"
@@ -78,6 +79,21 @@ struct DataTypeEncodingTraits<Type, BIT_SHUFFLE> {
   static Status CreateBlockDecoder(BlockDecoder **bd, const Slice &slice,
                                    CFileIterator *iter) {
     *bd = new BShufBlockDecoder<Type>(slice);
+    return Status::OK();
+  }
+};
+
+template<DataType Type>
+struct DataTypeEncodingTraits<Type, DELTA_PACKING> {
+
+  static Status CreateBlockBuilder(BlockBuilder** bb, const WriterOptions* options) {
+    *bb = new DeltaBlockBuilder<Type>(options);
+    return Status::OK();
+  }
+
+  static Status CreateBlockDecoder(BlockDecoder** bd, const Slice& slice,
+                                   CFileIterator* iter) {
+    *bd = new DeltaBlockDecoder<Type>(slice);
     return Status::OK();
   }
 };
@@ -272,9 +288,11 @@ class TypeEncodingResolver {
     AddMapping<UINT32, RLE>();
     AddMapping<UINT32, PLAIN_ENCODING>();
     AddMapping<UINT32, BIT_SHUFFLE>();
+    AddMapping<UINT32, DELTA_PACKING>();
     AddMapping<INT32, PLAIN_ENCODING>();
     AddMapping<INT32, RLE>();
     AddMapping<INT32, BIT_SHUFFLE>();
+    AddMapping<INT32, DELTA_PACKING>();
     AddMapping<UINT64, PLAIN_ENCODING>();
     AddMapping<UINT64, BIT_SHUFFLE>();
     AddMapping<INT64, PLAIN_ENCODING>();
